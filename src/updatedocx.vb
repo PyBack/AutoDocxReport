@@ -1,12 +1,25 @@
 Sub test()
     
+    Dim excelApp As Excel.Application
+    
     Dim wordApp As Word.Application
     Dim wordDoc As Word.Document
     
+    Set excelApp = New Excel.Application
     Set wordApp = New Word.Application
+    
+    ' Load Data
+    Windows("Index_data.xlsx").Activate
+    Excel.ActiveWindow.Visible = Ture
+    Excel.ActiveWorkbook.Sheets(2).Range("A9:B16").Select
+    Selection.Copy
+                
+    MsgBox "Copy Data"
+            
     Word.windows("Test Index.docx").Activate
-
-    'MsgBox Word.ActivateDocument.Name
+    Word.ActiveWindow.Visible = True
+    MsgBox Word.ActivateDocument.Name
+    
     Set wordDoc = Word.ActiveDocument
     Set shp = wordDoc.Shapes(2)
 
@@ -16,9 +29,15 @@ Sub test()
         Set wb = cht.ChartData.WorkBook
         Set sht = wb.Sheets(1)
         
-        MsgBox 'Open Chart Data'
+        sht.Activate
+        sht.Range("A2:B2").Select
+        'Insert Data'
+        Selection.Insert Shift:=xlDownb
+        Range("C6").Select
         
-        cht.ChartData.Close
+        MsgBox "Insert Data"
+        cht.ChartData.Workbook.Close
+        cht.Refresh
     End If
 
     
